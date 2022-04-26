@@ -32,14 +32,20 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,  // 10 years
         httpOnly: true,
-        secure: __prod__,   // cookie only works in https
-        sameSite: 'lax',    // csrf
+        // secure: __prod__,   // cookie only works in https
+        // sameSite: 'lax',    // csrf
+        sameSite: 'none',
+        secure: true
       },
       saveUninitialized: false,
-      secret: "askjdlakhoiwjalknlasndka",
+      secret: "askjdlakhoiwjalknlasndka",   // todo: move to env
       resave: false,
     })
   )
+
+  app.set('trust proxy', !__prod__);    // not secure method
+  // todo
+  // app.set('trust proxy', process.env.NODE_ENV !== 'production')    // secure method
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -47,10 +53,19 @@ const main = async () => {
       validate: false
     }),
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    
   });
 
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware(
+    { 
+      app,
+      cors: {
+        origin: ['http://localhost:4000/graphql', 'https://studio.apollographql.com'],
+        credentials: true
+      },
+    }
+  );
   
   app.listen(4000, () => {
     console.log('Server started on localhost:4000');
