@@ -16,6 +16,7 @@ export type Scalars = {
 };
 
 export type FieldError = {
+  [x: string]: any;
   __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];
