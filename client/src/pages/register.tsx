@@ -26,7 +26,7 @@ const Register: React.FC<registerProps> = ({}) => {
           }
         }}
       >
-        {( isSubmitting ) => (
+        {({ isSubmitting }) => (
           <Form>
             <InputField 
               name='username' 
@@ -41,7 +41,7 @@ const Register: React.FC<registerProps> = ({}) => {
                 type='password' 
               />
             </Box>
-            <Button mt={4} type='submit' isLoading={!isSubmitting} colorScheme='teal'>Register</Button>
+            <Button mt={4} type='submit' isLoading={isSubmitting} colorScheme='teal'>Register</Button>
           </Form>
         )}
       </Formik>
