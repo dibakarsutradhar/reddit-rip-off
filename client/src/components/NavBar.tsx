@@ -11,7 +11,6 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
 
   // data is loading
   if (fetching) {
-
     // user not logged in
   } else if (!data?.me) {
     body = (
@@ -26,13 +25,12 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
     )
     // user is logged in
   } else {
+    console.log(data?.me);
     body = (
-      <>
-        <Flex>
-          <Box mr={2}>{data.me.username}</Box>
-          <Button variant='link'>logout</Button>
-        </Flex>
-      </>
+      <Flex>
+        <Box mr={2}>{data.me.username}</Box>
+        <Button variant='link'>logout</Button>
+      </Flex>
     )
   }
 

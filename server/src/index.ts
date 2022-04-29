@@ -25,6 +25,7 @@ const main = async () => {
 
   app.use(cors({
     origin: [
+      'http://localhost:4000/graphql',
       'http://localhost:3000',
       'https://studio.apollographql.com'
     ],

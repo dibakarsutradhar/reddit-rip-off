@@ -97,7 +97,8 @@ export type UserResponse = {
 };
 
 export type LoginMutationVariables = Exact<{
-  options: UpInput;
+  username: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -118,8 +119,8 @@ export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: nu
 
 
 export const LoginDocument = gql`
-    mutation Login($options: UPInput!) {
-  login(options: $options) {
+    mutation Login($username: String!, $password: String!) {
+  login(options: {username: $username, password: $password}) {
     errors {
       field
       message
