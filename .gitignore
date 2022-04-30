@@ -105,3 +105,6 @@ dist
 
 # Prettier Config
 .prettierrc
+
+# Redis Dump
+server/dump.rdb
