@@ -106,7 +106,7 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: 'username',
+            field: 'usernameorEmail',
             message: "that username doesn't exist"
           }
         ]
