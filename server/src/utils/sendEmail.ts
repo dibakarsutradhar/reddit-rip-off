@@ -12,6 +12,11 @@ export async function sendEmail(to: string, html: string) {
     host: "smtp.ethereal.email",
     port: 587,
     secure: false, // true for 465, false for other ports
+    tls: {
+      ciphers: 'SSLv3',
+      // rejectUnauthorized: false
+    },
+    requireTLS: true,
     auth: {
       // move them to env, they are just test accounts
       user: 'okt5vfgsxd6gzl4g@ethereal.email', // generated ethereal user

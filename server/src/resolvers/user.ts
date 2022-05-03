@@ -6,7 +6,7 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { UPInput } from "./UPInput";
 import { validateRegister } from "../utils/validateRegister";
-import { sendEmail } from "src/utils/sendEmail";
+import { sendEmail } from "../utils/sendEmail";
 import { v4 } from "uuid";
 
 @ObjectType()
@@ -44,7 +44,7 @@ export class UserResolver {
       FORGET_PASSWORD_PREFIX + token, 
       user.id, 
       'EX', 
-      1000 * 60 * 60 * 24 * 30
+      1000 * 60 * 60 * 24 * 3
     );   // 3Days
 
     await sendEmail(
