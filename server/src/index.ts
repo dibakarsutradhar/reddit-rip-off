@@ -8,22 +8,20 @@ import { buildSchema } from 'type-graphql';
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from './resolvers/user';
-import { createClient } from 'redis';
+import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { MyContext } from './types';
 import cors from 'cors';
-import { User } from './entities/User';
 
 const main = async () => {
   const orm = await MikroORM.init(microConfig);
-  await orm.em.nativeDelete(User, {});
   await orm.getMigrator().up();
   
   const app = express();
   
   const RedisStore = connectRedis(session);
-  const redisClient = createClient();
+  const redis = new Redis();
 
   app.use(cors({
     origin: [
@@ -39,7 +37,7 @@ const main = async () => {
       name: COOKIE_NAME,
       // name: 'qid',
       store: new RedisStore({
-        client: redisClient,
+        client: redis,
         disableTouch: true,
       }),
       cookie: {
@@ -65,19 +63,15 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
-    
+    context: ({ req, res }): MyContext => ({ em: orm.em, req, res, redis }),
   });
 
   await apolloServer.start();
+  
   apolloServer.applyMiddleware(
     { 
       app,
       cors: false,
-      // cors: {
-      //   origin: ['http://localhost:4000/graphql', 'http://localhost:3000', 'https://studio.apollographql.com'],
-      //   credentials: true
-      // },
     }
   );
   
