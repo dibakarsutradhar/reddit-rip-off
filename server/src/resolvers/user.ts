@@ -1,5 +1,5 @@
 import argon2 from "argon2";
-import dataSource from "src/app-data-source";
+import dataSource from "../app-data-source";
 import { MyContext } from "src/types";
 import {
   Arg,
@@ -145,6 +145,11 @@ export class UserResolver {
     const hashedPassword = await argon2.hash(options.password);
     let user;
     try {
+      // User.create({
+      //   username: options.username,
+      //   password: hashedPassword,
+      //   email: options.email,
+      // }).save();
       const result = await dataSource
         .createQueryBuilder()
         .insert()
@@ -156,7 +161,7 @@ export class UserResolver {
         })
         .returning("*")
         .execute();
-      user = result.raw;
+      user = result.raw[0];
     } catch (err) {
       // duplicate username error
       if (err.code === "23505") {

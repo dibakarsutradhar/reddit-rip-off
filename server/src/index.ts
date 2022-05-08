@@ -6,6 +6,7 @@ import session from "express-session";
 import Redis from "ioredis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
+import dataSource from "./app-data-source";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
@@ -13,6 +14,13 @@ import { UserResolver } from "./resolvers/user";
 import { MyContext } from "./types";
 
 const main = async () => {
+  dataSource
+    .initialize()
+    .then(() => console.log("Data Source has been initialized"))
+    .catch((err) => {
+      console.error("Error during Data Soruce initalization", err);
+    });
+
   const app = express();
 
   const RedisStore = connectRedis(session);
