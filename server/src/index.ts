@@ -14,7 +14,7 @@ import { UserResolver } from "./resolvers/user";
 import { MyContext } from "./types";
 
 const main = async () => {
-  dataSource
+  await dataSource
     .initialize()
     .then(() => console.log("Data Source has been initialized"))
     .catch((err) => {
