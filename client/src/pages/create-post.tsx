@@ -18,9 +18,7 @@ const CreatePost: React.FC<{}> = ({}) => {
         onSubmit={async (values) => {
           console.log(values);
           const { error } = await createPost({ input: values });
-          if (error?.message.includes("not authenticated")) {
-            router.push("/login");
-          } else {
+          if (!error) {
             router.push("/");
           }
         }}
