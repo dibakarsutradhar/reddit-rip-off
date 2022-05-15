@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
+import path from "path";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -10,7 +11,7 @@ const dataSource = new DataSource({
   logging: true,
   synchronize: true,
   entities: [Post, User],
-  migrations: ["src/migrations/*.ts"],
+  migrations: [path.join(__dirname, "./migrations/*")],
 });
 
 export default dataSource;
