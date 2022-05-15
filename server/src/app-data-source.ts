@@ -10,6 +10,7 @@ const dataSource = new DataSource({
   logging: true,
   synchronize: true,
   entities: [Post, User],
+  migrations: ["src/migrations/*.ts"],
 });
 
 export default dataSource;
