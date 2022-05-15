@@ -21,6 +21,8 @@ const main = async () => {
       console.error("Error during Data Soruce initalization", err);
     });
 
+  // await dataSource.runMigrations();
+
   const app = express();
 
   const RedisStore = connectRedis(session);
