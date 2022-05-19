@@ -6,6 +6,7 @@ import {
   InputType,
   Int,
   Mutation,
+  ObjectType,
   Query,
   Resolver,
   Root,
@@ -13,9 +14,9 @@ import {
 } from "type-graphql";
 import dataSource from "../app-data-source";
 import { Post } from "../entities/Post";
+// import { Updoot } from "../entities/Updoot";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
-import { ObjectType } from "type-graphql";
 
 @InputType()
 class PostInput {
@@ -38,6 +39,41 @@ export class PostResolver {
   @FieldResolver(() => String)
   textSnippet(@Root() root: Post) {
     return root.text.slice(0, 50);
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async vote(
+    @Arg("postId", () => Int) postId: number,
+    @Arg("value", () => Int) value: number,
+    @Ctx() { req }: MyContext
+  ) {
+    const isUpdoot = value !== -1;
+    const realValue = isUpdoot ? 1 : -1;
+    const { userId } = req.session;
+
+    // Updoot.insert({
+    //   userId,
+    //   postId,
+    //   value: realValue,
+    // });
+
+    await dataSource.query(
+      `
+      START TRANSACTION;
+
+      insert into updoot ("userId", "postId", value)
+      values(${userId}, ${postId}, ${realValue});
+
+      update post
+      set points = points + ${realValue}
+      where id = ${postId};
+
+      COMMIT;
+    `
+    );
+
+    return true;
   }
 
   @Query(() => PaginatedPosts)
@@ -87,7 +123,7 @@ export class PostResolver {
     // }
 
     // const posts = await queryBuilder.getMany();
-    console.log("posts: ", posts);
+    // console.log("posts: ", posts);
 
     return {
       posts: posts.slice(0, realLimit),
