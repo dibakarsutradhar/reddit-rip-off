@@ -1,10 +1,8 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Heading,
-  IconButton,
   Link,
   Stack,
   Text,
@@ -13,6 +11,7 @@ import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import { useState } from "react";
 import Layout from "../components/Layout";
+import UpdootSection from "../components/UpdootSection";
 import { usePostsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
@@ -44,22 +43,7 @@ const Index = () => {
         <Stack spacing={8}>
           {data!.posts.posts.map((p) => (
             <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
-              <Flex
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                mr={4}
-              >
-                <IconButton
-                  aria-label="Upvote"
-                  icon={<ChevronUpIcon w={6} h={6} />}
-                />
-                {p.points}
-                <IconButton
-                  aria-label="Downvote"
-                  icon={<ChevronDownIcon w={6} h={6} />}
-                />
-              </Flex>
+              <UpdootSection post={p} />
               <Box>
                 <Heading fontSize="xl">{p.title}</Heading>{" "}
                 <Text>posted by: {p.creator.username}</Text>
