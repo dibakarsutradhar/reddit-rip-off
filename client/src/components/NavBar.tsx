@@ -29,7 +29,6 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
     );
     // user is logged in
   } else {
-    console.log(data?.me);
     body = (
       <Flex>
         <Box mr={2}>{data.me.username}</Box>
