@@ -108,3 +108,6 @@ dist
 
 # Redis Dump
 server/dump.rdb
+
+# nvm
+.nvmrc
