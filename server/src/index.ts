@@ -12,6 +12,7 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
+import { createUpdootLoader } from "./utils/createUpdootLoader";
 import { createUserLoader } from "./utils/createUserLoader";
 
 const main = async () => {
@@ -78,6 +79,7 @@ const main = async () => {
       res,
       redis,
       userLoader: createUserLoader(),
+      updootLoader: createUpdootLoader(),
     }),
   });
 
